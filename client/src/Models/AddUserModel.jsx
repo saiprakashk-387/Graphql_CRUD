@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -9,24 +9,12 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { CREATE_USER } from "../graphql-queries/queries";
 import { useMutation } from "@apollo/client";
+import { CREATE_USER } from "../graphql-queries/queries";
 
 function AddUserModel(props) {
   const { open, handleClose } = props;
   const [addUser, { data }] = useMutation(CREATE_USER);
-
-  useEffect(() => {
-    if (data?.addUser) {
-      toast.success("Success Notification !");     
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
-    }
-    setTimeout(() => {
-      toast.error("Error Notification !");
-    }, 500);
-  }, [data?.addUser]);
 
   const initialValues = {
     username: "",
@@ -43,7 +31,16 @@ function AddUserModel(props) {
       password: yup.number().required("password is required"),
     }),
     onSubmit: async (values) => {
-      await addUser({ variables: values });
+      await addUser({ variables: values })
+        .then((res) => {
+          toast.success("User Added ");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000)
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
     },
   });
   return (

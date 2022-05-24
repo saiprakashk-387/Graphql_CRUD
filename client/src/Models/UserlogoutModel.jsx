@@ -2,11 +2,14 @@ import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../Context/MyContext";
 
 function UserLogoutModel() {
   const [LoginDetails] = useContext(UserContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -17,9 +20,10 @@ function UserLogoutModel() {
   const clickMenu = (e) => {
     if (e.target) {
       localStorage.clear();
+      toast.success("Logout Successfully ");
       setTimeout(() => {
         window.location.reload();
-      }, 200);
+      }, 1000);
     }
   };
   return (

@@ -8,9 +8,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
-import { GET_USER } from "../graphql-queries/queries";
 import Loader from "./Loader";
 import { useQuery } from "@apollo/client";
+import { GET_USER } from "../graphql-queries/queries";
 import UserModel from "../Models/UserModel";
 import UserDeleteModel from "../Models/UserDeleteModel";
 import {UserContext} from '../Context/MyContext';
@@ -21,7 +21,7 @@ function Tablecomponent() {
   const [openDelete, setOpenDelete] = React.useState(false);
   const [DeleteId, setDeleteId] = useState("");
   const [Edit, setEdit] = useState("");
-
+   
   const handleClickOpen = (val) => {
     setOpen(true);
     setEdit(val);

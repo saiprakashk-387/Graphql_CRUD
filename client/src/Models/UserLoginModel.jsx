@@ -7,6 +7,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function UserLoginModel(props) {
   const { open, handleClose } = props;
@@ -29,9 +31,10 @@ function UserLoginModel(props) {
         localStorage.setItem("name", values.username);
         localStorage.setItem("email", values.email);
       }
+      toast.success(`Hello ${values.username}`);
       setTimeout(() => {
         window.location.reload();
-      }, 100);
+      }, 1000);
     },
   });
   return (

@@ -5,8 +5,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { UPDATE_USER } from "../graphql-queries/queries";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useMutation } from "@apollo/client";
+import { UPDATE_USER } from "../graphql-queries/queries";
 
 function UserModel(props) {
   const { open, handleClose, Edit } = props;
@@ -21,11 +23,6 @@ function UserModel(props) {
   useEffect(() => {
     setValue(Edit);
   }, [Edit]);
-  useEffect(() => {
-    if (data) {
-      window.location.reload();
-    }
-  }, [data]);
   const handleInput = (e) => {
     e.preventDefault();
     let myData = { ...Value };
@@ -35,7 +32,16 @@ function UserModel(props) {
   const update = (e) => {
     e.preventDefault();
     console.log("Value", Value);
-    updateUser({ variables: Value });
+    updateUser({ variables: Value })
+      .then((res) => {
+        toast.success("User Updated ");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
     setValue({ email: "", mobile: "", username: "", id: "" });
     handleClose();
   };
