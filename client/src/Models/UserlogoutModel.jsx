@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { UserContext } from "../Context/MyContext";
 
 function UserLogoutModel() {
-  const [LoginDetails, setLoginDetails] = useState({
-    name: localStorage.getItem("name"),
-    email: localStorage.getItem("email"),
-  });
+  const [LoginDetails] = useContext(UserContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {

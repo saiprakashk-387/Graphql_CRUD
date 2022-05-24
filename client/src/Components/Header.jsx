@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useContext} from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,12 +8,10 @@ import IconButton from "@mui/material/IconButton";
 import AddUserModel from "../Models/AddUserModel";
 import UserLoginModel from "../Models/UserLoginModel";
 import UserLogoutModel from "../Models/UserlogoutModel";
+import {UserContext} from '../Context/MyContext';
 
 function Header() {
-  const [LoginDetails, setLoginDetails] = useState({
-    name: localStorage.getItem("name"),
-    email: localStorage.getItem("email"),
-  });
+  const [LoginDetails] = useContext(UserContext);
   const [open, setOpen] = React.useState(false);
   const [openLoginModel, setOpenLoginModel] = React.useState(false);
   const [Edit, setEdit] = useState("");

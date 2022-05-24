@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useContext} from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,8 +13,10 @@ import Loader from "./Loader";
 import { useQuery } from "@apollo/client";
 import UserModel from "../Models/UserModel";
 import UserDeleteModel from "../Models/UserDeleteModel";
+import {UserContext} from '../Context/MyContext';
 
 function Tablecomponent() {
+  const [LoginDetails] = useContext(UserContext);
   const [open, setOpen] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [DeleteId, setDeleteId] = useState("");
@@ -35,7 +37,6 @@ function Tablecomponent() {
   const handleCloseDelete = () => {
     setOpenDelete(false);
   };
-  const name = localStorage.getItem("name");
   const [Search, setSearch] = useState("");
   const { loading, data, error } = useQuery(GET_USER);
 
@@ -106,7 +107,7 @@ function Tablecomponent() {
                         <TableCell align="right">{item.email}</TableCell>
                         <TableCell align="right">{item.mobile}</TableCell>
                         <TableCell align="right">
-                          {name ?  <Button
+                          {LoginDetails?.name ?  <Button
                             variant="contained"
                             color="info"
                             onClick={() => {
@@ -121,7 +122,7 @@ function Tablecomponent() {
                           >
                             Edit
                           </Button> }
-                         {name ?  <Button
+                         {LoginDetails?.name ?  <Button
                             variant="contained"
                             color="error"
                             style={{ marginLeft: 5 }}
