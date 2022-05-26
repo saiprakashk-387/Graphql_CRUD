@@ -1,4 +1,4 @@
-import React, { useState ,useContext} from "react";
+import React, { useState, useContext } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,7 +13,10 @@ import { useQuery } from "@apollo/client";
 import { GET_USER } from "../graphql-queries/queries";
 import UserModel from "../Models/UserModel";
 import UserDeleteModel from "../Models/UserDeleteModel";
-import {UserContext} from '../Context/MyContext';
+import { UserContext } from "../Context/MyContext";
+import InfoModel from "../Models/InfoModel";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function Tablecomponent() {
   const [LoginDetails] = useContext(UserContext);
@@ -21,7 +24,8 @@ function Tablecomponent() {
   const [openDelete, setOpenDelete] = React.useState(false);
   const [DeleteId, setDeleteId] = useState("");
   const [Edit, setEdit] = useState("");
-   
+  const [Info, setInfo] = useState("");
+
   const handleClickOpen = (val) => {
     setOpen(true);
     setEdit(val);
@@ -36,6 +40,10 @@ function Tablecomponent() {
   };
   const handleCloseDelete = () => {
     setOpenDelete(false);
+  };
+  ////info model data ///
+  const getInfo = (val) => {
+    setInfo(val);
   };
   const [Search, setSearch] = useState("");
   const { loading, data, error } = useQuery(GET_USER);
@@ -81,6 +89,7 @@ function Tablecomponent() {
                     <TableCell align="right">Name</TableCell>
                     <TableCell align="right">Email</TableCell>
                     <TableCell align="right">Mobile</TableCell>
+                    <TableCell align="right">User Info</TableCell>
                     <TableCell align="right">Actions</TableCell>
                   </TableRow>
                 </TableHead>
@@ -107,38 +116,61 @@ function Tablecomponent() {
                         <TableCell align="right">{item.email}</TableCell>
                         <TableCell align="right">{item.mobile}</TableCell>
                         <TableCell align="right">
-                          {LoginDetails?.name ?  <Button
-                            variant="contained"
-                            color="info"
+                          <Button
                             onClick={() => {
-                              handleClickOpen(item);
+                              getInfo(item);
                             }}
                           >
-                            Edit
-                          </Button> :  <Button
-                            variant="contained"
-                            color="info"
-                            disabled                           
-                          >
-                            Edit
-                          </Button> }
-                         {LoginDetails?.name ?  <Button
-                            variant="contained"
-                            color="error"
-                            style={{ marginLeft: 5 }}
-                            onClick={() => {
-                              handleClickOpenDelete(item);
-                            }}
-                          >
-                            Delete
-                          </Button> :  <Button
-                            variant="contained"
-                            color="error"
-                            disabled
-                            style={{ marginLeft: 5 }}                            
-                          >
-                            Delete
-                          </Button> }                          
+                            <InfoModel Info={Info} />
+                          </Button>
+                        </TableCell>
+                        <TableCell align="right">
+                          {LoginDetails?.name ? (                            
+                            <Button
+                              variant="contained"
+                              color="info"
+                              style={{ marginLeft: 5 }}
+                              startIcon={<EditIcon />}
+                              onClick={() => {
+                                handleClickOpen(item);
+                              }}
+                            >
+                              Edit
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="contained"
+                              color="info"
+                              style={{ marginLeft: 5 }}
+                              startIcon={<EditIcon />}
+                              disabled
+                            >
+                              Edit
+                            </Button>
+                          )}
+                          {LoginDetails?.name ? (                           
+                            <Button
+                              variant="contained"
+                              color="error"
+                              style={{ marginLeft: 5 }}
+                              startIcon={<DeleteIcon />}
+                              onClick={() => {
+                                handleClickOpenDelete(item);
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="contained"
+                              color="error"
+                              disabled
+                              startIcon={<DeleteIcon />}
+                              style={{ marginLeft: 5 }}
+                            >
+                              Delete
+                            </Button>
+                          )}
                         </TableCell>
                         <UserModel
                           Edit={Edit}

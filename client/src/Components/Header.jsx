@@ -1,14 +1,15 @@
-import React, { useState ,useContext} from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import Fingerprint from "@mui/icons-material/Fingerprint";
 import AddUserModel from "../Models/AddUserModel";
 import UserLoginModel from "../Models/UserLoginModel";
 import UserLogoutModel from "../Models/UserlogoutModel";
-import {UserContext} from '../Context/MyContext';
+import { UserContext } from "../Context/MyContext";
 
 function Header() {
   const [LoginDetails] = useContext(UserContext);
@@ -52,9 +53,11 @@ function Header() {
             <Button color="inherit" onClick={getModel}>
               ADD
             </Button>
-          ) :  <Button disabled color="inherit" >
-          ADD
-        </Button>}
+          ) : (
+            <Button disabled color="inherit">
+              ADD
+            </Button>
+          )}
 
           <Typography
             variant="h6"
@@ -64,10 +67,15 @@ function Header() {
             Graphql Crud
           </Typography>
           {LoginDetails?.name ? (
-            <UserLogoutModel />
+            <>
+              <IconButton aria-label="fingerprint" color="inherit">
+                <Fingerprint />
+                <UserLogoutModel />
+              </IconButton>
+            </>
           ) : (
             <Button color="inherit" onClick={getLoginModel}>
-              Login for CRUD 
+              Login for CRUD
             </Button>
           )}
         </Toolbar>
