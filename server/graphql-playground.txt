@@ -1,0 +1,84 @@
+<---------------------------Graphql Operations------------------------------------->
+// get user by id///
+
+# {
+#   user(id:string){
+#     username
+#     email
+#     mobile
+#     id
+#   }
+# }
+
+////get all users///
+
+{
+  users{
+    username
+    email
+    mobile
+    id
+  }
+}
+
+////add user///
+
+# mutation{
+#   addUser(username:string,email:string,mobile:string){
+#     id
+#     username
+#     email
+#      mobile
+#   }
+# }
+
+///delete user////
+
+# mutation{
+#   deleteUser(id:string){
+#     username
+#   }
+# }
+
+///update user///
+
+# mutation{
+#    updateUser(username:string,email:string,mobile:string,idstring){
+#     id
+#     username
+#     email
+#      mobile
+#   }
+# }
+
+
+<---------------------------Graphql Variables------------------------------------->
+
+//Update User
+{
+  "updateInput": {
+    "id": "", //type exiting user id
+    "username": "",
+    "email": "",
+    "mobile": "",
+  }
+}
+
+//Delete User
+{
+  "deleteInput": {
+    "id": "",  //type exiting user id
+  }
+}
+
+//add user 
+{
+#     username:""
+#     email:""
+#      mobile:""
+#   }
+
+//get user by if 
+{
+    id:"" type exixing id 
+}
