@@ -20,7 +20,7 @@ function UserLogoutModel() {
   const clickMenu = (e) => {
     if (e.target) {
       localStorage.clear();
-      toast.success("Logout Successfully ");
+      toast.success("Logout Successfull ");
       setTimeout(() => {
         window.location.reload();
       }, 1000);

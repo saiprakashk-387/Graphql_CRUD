@@ -2,7 +2,8 @@ import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { faInfo } from "@fortawesome/free-solid-svg-icons/faInfo";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ITEM_HEIGHT = 48;
 
@@ -27,7 +28,7 @@ function InfoModel(props) {
           aria-haspopup="true"
           onClick={handleClick}
         >
-          <MoreVertIcon />
+          <FontAwesomeIcon icon={faInfo} variant="contained" />
         </IconButton>
         {Info && (
           <Menu
@@ -41,19 +42,17 @@ function InfoModel(props) {
             PaperProps={{
               style: {
                 maxHeight: ITEM_HEIGHT * 4.5,
-                width: "20ch",
+                width: "25ch",
               },
             }}
           >
-          
-              <MenuItem              
-                //    onClick={handleClose}
-              >
-                <li> Name:{Info.username} </li> <br />
-                  <li>  Mail:{Info.email} </li>     <br />
-                  <li> Mobile:{Info.mobile} </li>
-              </MenuItem>
-           
+            <MenuItem>
+              <ul style={{ listStyle: "none", paddingLeft: "0px" }}>
+                <li> Name:{Info.username} </li>
+                <li> Mail:{Info.email} </li>
+                <li> Mobile:{Info.mobile} </li>
+              </ul>
+            </MenuItem>
           </Menu>
         )}
       </div>

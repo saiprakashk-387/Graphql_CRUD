@@ -79,29 +79,3 @@ function UserLoginModel(props) {
 }
 export default UserLoginModel;
 
-//   {/* <TextField
-//             autoFocus
-//             margin="dense"
-//             label="Mobile"
-//             type="text"
-//             name="mobile"
-//             fullWidth
-//             variant="outlined"
-//             value={formik.values.mobile}
-//             onChange={formik.handleChange}
-//             helperText={formik.touched.mobile ? formik.errors.mobile : null}
-//             error={formik.touched.mobile ? formik.errors.mobile : null}
-//           />
-//           <TextField
-//             autoFocus
-//             margin="dense"
-//             label="Password"
-//             type="text"
-//             name="password"
-//             fullWidth
-//             variant="outlined"
-//             value={formik.values.password}
-//             onChange={formik.handleChange}
-//             helperText={formik.touched.password ? formik.errors.password : null}
-//             error={formik.touched.password ? formik.errors.password : null}
-//           /> */}
