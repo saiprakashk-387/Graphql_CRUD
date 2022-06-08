@@ -6,6 +6,7 @@ export const UserProvider = (props) => {
   const [LoginDetails, setLoginDetails] = useState({
     name: localStorage.getItem("name"),
     email: localStorage.getItem("email"),
+    login:localStorage.getItem("timeStamp")
   });
   return (
     <UserContext.Provider value={[LoginDetails]}>

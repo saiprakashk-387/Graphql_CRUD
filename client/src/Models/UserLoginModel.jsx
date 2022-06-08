@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import moment from "moment";
 
 function UserLoginModel(props) {
   const { open, handleClose } = props;
@@ -30,6 +31,9 @@ function UserLoginModel(props) {
       if (values) {
         localStorage.setItem("name", values.username);
         localStorage.setItem("email", values.email);
+        localStorage.setItem("timeStamp", moment().format("LT"))
+        // let inTime = moment().format("LT")
+        // localStorage.setItem("sessionexpire",moment(inTime, "h:mm A").add(2, "minutes").format("LT"))
       }
       toast.success(`Hello ${values.username}`);
       setTimeout(() => {

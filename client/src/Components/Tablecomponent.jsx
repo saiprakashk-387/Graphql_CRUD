@@ -71,7 +71,7 @@ function Tablecomponent() {
               >
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search with Username"
+                  placeholder="Search with Name"
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}

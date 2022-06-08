@@ -1,14 +1,30 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../Context/MyContext";
+import { millisToMinutesAndSeconds } from "../Utils/Session";
 
 function UserLogoutModel() {
   const [LoginDetails] = useContext(UserContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  useEffect(() => {
+    let SesionOutCount = 60000;
+    let TimeOutInMinutes = millisToMinutesAndSeconds(SesionOutCount);
+    if (LoginDetails.login) {
+      toast(`your session will expire in ${TimeOutInMinutes} minutes`);
+      setTimeout(() => {
+        localStorage.clear();
+        toast.success("Session Expired ");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }, SesionOutCount);
+    }
+  }, []);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
