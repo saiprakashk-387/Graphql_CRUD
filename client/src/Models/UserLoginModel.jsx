@@ -7,7 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { toast } from "react-toastify";
+import { toast ,Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
 
@@ -35,7 +35,9 @@ function UserLoginModel(props) {
         // let inTime = moment().format("LT")
         // localStorage.setItem("sessionexpire",moment(inTime, "h:mm A").add(2, "minutes").format("LT"))
       }
-      toast.success(`Hello ${values.username}`);
+      toast.success(`Hello ${values.username}`,{
+        transition: Bounce
+      });
       setTimeout(() => {
         window.location.reload();
       }, 1000);

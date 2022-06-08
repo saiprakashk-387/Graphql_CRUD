@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { toast } from "react-toastify";
+import { toast, Slide, Zoom, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../Context/MyContext";
 import { millisToMinutesAndSeconds } from "../Utils/Session";
@@ -15,10 +15,14 @@ function UserLogoutModel() {
     let SesionOutCount = 60000;
     let TimeOutInMinutes = millisToMinutesAndSeconds(SesionOutCount);
     if (LoginDetails.login) {
-      toast(`your session will expire in ${TimeOutInMinutes} minutes`);
+      toast(`your session will expire in ${TimeOutInMinutes} minutes` ,{
+        transition: Slide
+      });
       setTimeout(() => {
         localStorage.clear();
-        toast.success("Session Expired ");
+        toast.success("Session Expired " ,{
+          transition: Zoom
+        });
         setTimeout(() => {
           window.location.reload();
         }, 1000);
@@ -36,7 +40,9 @@ function UserLogoutModel() {
   const clickMenu = (e) => {
     if (e.target) {
       localStorage.clear();
-      toast.success("Logout Successfull ");
+      toast.success("Logout Successfull " , {
+        transition: Flip
+      });
       setTimeout(() => {
         window.location.reload();
       }, 1000);
