@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,27 +9,57 @@ import { millisToMinutesAndSeconds } from "../Utils/Session";
 
 function UserLogoutModel() {
   const [LoginDetails] = useContext(UserContext);
+  const [SesionExtend, setSesionExtend] = useState();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const SesionOutCount = SesionExtend ? SesionExtend * 60000 : 60000;
+  const TimeOutInMinutes = millisToMinutesAndSeconds(SesionOutCount);
 
   useEffect(() => {
-    let SesionOutCount = 60000;
-    let TimeOutInMinutes = millisToMinutesAndSeconds(SesionOutCount);
     if (LoginDetails.login) {
-      toast(`your session will expire in ${TimeOutInMinutes} minutes` ,{
-        transition: Slide
+      toast(toastContent(), {
+        transition: Slide,
       });
-      setTimeout(() => {
-        localStorage.clear();
-        toast.success("Session Expired " ,{
-          transition: Zoom
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      }, SesionOutCount);
+      let timeValue = setTimeout(
+        () => {
+          localStorage.clear();
+          toast.success("Session Expired ", {
+            transition: Zoom,
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        },
+        SesionOutCount,
+        {
+          transition: Slide,
+        }
+      );
+      return () => {
+        clearTimeout(timeValue);
+      };
     }
-  }, []);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [SesionOutCount]);
+  const toastContent = () => {
+    const extendSession = (e) => {
+      setSesionExtend(e.target.value);
+    };
+    return (
+      <>
+        <p>{`your session will expire in ${TimeOutInMinutes} minutes`}</p>
+        <Button
+          variant="contained"
+          color="success"
+          value="2"
+          onClick={(e) => {
+            extendSession(e);
+          }}
+        >
+          Stay
+        </Button>
+      </>
+    );
+  };
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -40,8 +70,8 @@ function UserLogoutModel() {
   const clickMenu = (e) => {
     if (e.target) {
       localStorage.clear();
-      toast.success("Logout Successfull " , {
-        transition: Flip
+      toast.success("Logout Successfull ", {
+        transition: Flip,
       });
       setTimeout(() => {
         window.location.reload();
