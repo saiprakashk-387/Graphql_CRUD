@@ -8,11 +8,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useMutation } from "@apollo/client";
-import { UPDATE_USER } from "../graphql-queries/queries";
+import { UPDATE_USER, GET_USER } from "../graphql-queries/queries";
 
 function UserModel(props) {
   const { open, handleClose, Edit } = props;
-  const [updateUser, { data }] = useMutation(UPDATE_USER);
+  const [updateUser, { data }] = useMutation(UPDATE_USER, {
+    refetchQueries: [{ query: GET_USER }],
+  });
 
   const [Value, setValue] = useState({
     email: "",
@@ -35,9 +37,6 @@ function UserModel(props) {
     updateUser({ variables: Value })
       .then((res) => {
         toast.success("User Updated ");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
       })
       .catch((error) => {
         toast.error(error.message);

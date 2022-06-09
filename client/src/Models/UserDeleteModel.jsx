@@ -8,23 +8,24 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useMutation } from "@apollo/client";
-import { DELETE_USER } from "../graphql-queries/queries";
+import { DELETE_USER, GET_USER } from "../graphql-queries/queries";
 
 function UserDeleteModel(props) {
   const { DeleteId, open, handleCloseDelete } = props;
-  const [deleteUser, { data }] = useMutation(DELETE_USER);
+  const [deleteUser, { data }] = useMutation(DELETE_USER, {
+    refetchQueries: [{ query: GET_USER }],
+  });
 
   const handleDelete = () => {
     let id = { id: DeleteId.id };
-    deleteUser({ variables: id }).then((res) => {
-      toast.success("User Deleted ");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000)
-    })
-    .catch((error) => {
-      toast.error(error.message);
-    });
+    deleteUser({ variables: id })
+      .then((res) => {
+        toast.success("User Deleted ");
+        handleCloseDelete();
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
   return (
     <div>

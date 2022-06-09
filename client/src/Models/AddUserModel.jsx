@@ -10,11 +10,13 @@ import * as yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useMutation } from "@apollo/client";
-import { CREATE_USER } from "../graphql-queries/queries";
+import { CREATE_USER, GET_USER } from "../graphql-queries/queries";
 
 function AddUserModel(props) {
   const { open, handleClose } = props;
-  const [addUser, { data }] = useMutation(CREATE_USER);
+  const [addUser, { data }] = useMutation(CREATE_USER, {
+    refetchQueries: [{ query: GET_USER }],
+  });
 
   const initialValues = {
     username: "",
@@ -34,9 +36,7 @@ function AddUserModel(props) {
       await addUser({ variables: values })
         .then((res) => {
           toast.success("User Added ");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000)
+          handleClose();
         })
         .catch((error) => {
           toast.error(error.message);
