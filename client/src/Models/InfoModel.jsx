@@ -4,6 +4,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { faInfo } from "@fortawesome/free-solid-svg-icons/faInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ContentCopyTwoToneIcon from "@mui/icons-material/ContentCopyTwoTone";
+import { toast, Flip } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ITEM_HEIGHT = 48;
 
@@ -16,6 +19,14 @@ function InfoModel(props) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const copyContent = (e) => {
+    navigator.clipboard
+      .writeText(JSON.stringify(e))
+      .then(toast("copied"), {
+        transition: Flip,
+      })
+      
   };
   return (
     <>
@@ -46,6 +57,15 @@ function InfoModel(props) {
               },
             }}
           >
+            <button
+              style={{ marginLeft: 170 }}
+              onClick={() => {
+                copyContent(Info);
+              }}
+            >
+              <ContentCopyTwoToneIcon />
+            </button>
+            <br />
             <MenuItem>
               <ul style={{ listStyle: "none", paddingLeft: "0px" }}>
                 <li> Name:{Info.username} </li>
