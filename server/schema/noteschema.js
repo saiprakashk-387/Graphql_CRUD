@@ -7,7 +7,6 @@ const {
   GraphQLString,
   GraphQLSchema,
   GraphQLList,
-  GraphQLInt,
 } = graphql;
 
 const UserType = new GraphQLObjectType({
@@ -18,9 +17,20 @@ const UserType = new GraphQLObjectType({
     email: { type: GraphQLString },
     password: { type: GraphQLString },
     mobile: { type: GraphQLString },
+    user_id: { type: GraphQLString },
   }),
 });
 
+function getValueForNextSequence(sequenceOfName) {
+  var sequenceDoc = userSchema.findOneAndUpdate({
+    query: { _id: sequenceOfName },
+    update: { $inc: { user_id: 1 } },
+    new: true,
+  });
+
+  return sequenceDoc.sequence_value;
+}
+const master = userSchema.find({})
 const Muatation = new GraphQLObjectType({
   //post
   name: "Mutation",
@@ -43,8 +53,9 @@ const Muatation = new GraphQLObjectType({
           email: args.email,
           password: args.password,
           mobile: args.mobile,
+          user_id: master.length+1
         });
-
+console.log("master",master);
         return users.save();
       },
     },
@@ -64,9 +75,9 @@ const Muatation = new GraphQLObjectType({
         email: { type: GraphQLString },
         mobile: { type: GraphQLString },
       },
-     async resolve(parent, args) {
+      async resolve(parent, args) {
         return await userSchema.findByIdAndUpdate(args.id, {
-          id:args.id,
+          id: args.id,
           username: args.username,
           email: args.email,
           mobile: args.mobile,
