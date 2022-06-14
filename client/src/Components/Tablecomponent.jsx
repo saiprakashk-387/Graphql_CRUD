@@ -9,6 +9,9 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
 import Loader from "./Loader";
+import ReactPaginate from "react-paginate";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useQuery } from "@apollo/client";
 import { GET_USER } from "../graphql-queries/queries";
 import UserModel from "../Models/UserModel";
@@ -17,6 +20,7 @@ import { UserContext } from "../Context/MyContext";
 import InfoModel from "../Models/InfoModel";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import '../App.css';
 
 function Tablecomponent() {
   const [LoginDetails] = useContext(UserContext);
@@ -47,6 +51,15 @@ function Tablecomponent() {
   };
   const [Search, setSearch] = useState("");
   const { loading, data, error } = useQuery(GET_USER);
+  const [offset, setOffset] = useState(0);
+  const [perPage] = useState(2);
+  const handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    setOffset(selectedPage);
+  };
+
+  const offset1 = offset * perPage;
+  console.log(offset1);
 
   return error ? (
     "Error !"
@@ -102,6 +115,7 @@ function Tablecomponent() {
                         return value;
                       }
                     })
+                    .slice(offset1, offset1 + perPage)
                     .map((item, i) => (
                       <TableRow
                         key={i}
@@ -110,7 +124,7 @@ function Tablecomponent() {
                         }}
                       >
                         <TableCell component="th" scope="row">
-                          {i + 1}
+                          {item.id}
                         </TableCell>
                         <TableCell align="right">{item.username}</TableCell>
                         <TableCell align="right">{item.email}</TableCell>
@@ -125,7 +139,7 @@ function Tablecomponent() {
                           </Button>
                         </TableCell>
                         <TableCell align="right">
-                          {LoginDetails?.name ? (                            
+                          {LoginDetails?.name ? (
                             <Button
                               variant="contained"
                               color="info"
@@ -148,7 +162,7 @@ function Tablecomponent() {
                               Edit
                             </Button>
                           )}
-                          {LoginDetails?.name ? (                           
+                          {LoginDetails?.name ? (
                             <Button
                               variant="contained"
                               color="error"
@@ -191,6 +205,30 @@ function Tablecomponent() {
                 </TableBody>
               </Table>
             </TableContainer>
+            <div style={{ marginLeft: "auto" }}>
+              <ReactPaginate
+                style={{ listStyle: "none", display: "-webkit-inline-box" }}
+                previousLabel={
+                  <ArrowBackIosNewIcon
+                    style={{ color: offset === 0 && "gray" }}
+                  />
+                }
+                nextLabel={
+                  <ArrowForwardIosIcon
+                    style={{ color: offset === data?.users.length && "gray" }}
+                  />
+                }
+                breakLabel={"..."}
+                breakClassName={"break-me"}
+                pageCount={2}
+                marginPagesDisplayed={0}
+                pageRangeDisplayed={perPage}
+                onPageChange={handlePageClick}
+                containerClassName={"pagination"}
+                subContainerClassName={"pages pagination"}
+                activeClassName={"active"}
+              />
+            </div>
           </>
         )}
       </div>
