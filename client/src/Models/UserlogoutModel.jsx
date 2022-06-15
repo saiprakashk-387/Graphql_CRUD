@@ -50,7 +50,7 @@ function UserLogoutModel() {
         <Button
           variant="contained"
           color="success"
-          value="2"
+          value="5"
           onClick={(e) => {
             extendSession(e);
           }}

@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { debounce } from "lodash";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -20,7 +21,7 @@ import { UserContext } from "../Context/MyContext";
 import InfoModel from "../Models/InfoModel";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import '../App.css';
+import "../App.css";
 
 function Tablecomponent() {
   const [LoginDetails] = useContext(UserContext);
@@ -53,13 +54,14 @@ function Tablecomponent() {
   const { loading, data, error } = useQuery(GET_USER);
   const [offset, setOffset] = useState(0);
   const [perPage] = useState(2);
+
   const handlePageClick = (e) => {
     const selectedPage = e.selected;
     setOffset(selectedPage);
   };
 
   const offset1 = offset * perPage;
-  console.log(offset1);
+  // console.log(offset1);
 
   return error ? (
     "Error !"
@@ -85,9 +87,10 @@ function Tablecomponent() {
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Search with Name"
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
+                  onChange={ debounce((e) => {
+                    // console.log("debounce",e.target.value);
+                      setSearch(e.target.value);
+                    }, 2000)}
                 />
               </Paper>
             </span>
@@ -108,14 +111,15 @@ function Tablecomponent() {
                 </TableHead>
                 <TableBody>
                   {data?.users
-                    ?.filter((value) => {
+                    ?.filter((value, i) => {
                       if (Search === !null) {
                         return value;
                       } else if (value.username.includes(Search)) {
                         return value;
                       }
                     })
-                    .slice(offset1, offset1 + perPage)
+                    .reverse()
+                    .slice(offset1, offset1 + perPage)                    
                     .map((item, i) => (
                       <TableRow
                         key={i}
@@ -124,19 +128,19 @@ function Tablecomponent() {
                         }}
                       >
                         <TableCell component="th" scope="row">
-                          {item.id}
+                          {i + 1}
                         </TableCell>
                         <TableCell align="right">{item.username}</TableCell>
                         <TableCell align="right">{item.email}</TableCell>
                         <TableCell align="right">{item.mobile}</TableCell>
                         <TableCell align="right">
-                          <Button
+                          {/* <Button
                             onClick={() => {
                               getInfo(item);
                             }}
                           >
                             <InfoModel Info={Info} />
-                          </Button>
+                          </Button> */}
                         </TableCell>
                         <TableCell align="right">
                           {LoginDetails?.name ? (
@@ -162,6 +166,7 @@ function Tablecomponent() {
                               Edit
                             </Button>
                           )}
+
                           {LoginDetails?.name ? (
                             <Button
                               variant="contained"
@@ -186,25 +191,26 @@ function Tablecomponent() {
                             </Button>
                           )}
                         </TableCell>
-                        <UserModel
-                          Edit={Edit}
-                          open={open}
-                          handleClose={handleClose}
-                          setOpen={setOpen}
-                          handleClickOpen={handleClickOpen}
-                        />
-                        <UserDeleteModel
-                          DeleteId={DeleteId}
-                          open={openDelete}
-                          handleCloseDelete={handleCloseDelete}
-                          setOpen={setOpenDelete}
-                          handleClickOpenDelete={handleClickOpenDelete}
-                        />
+                        {/* ////ok */}
                       </TableRow>
                     ))}
                 </TableBody>
               </Table>
             </TableContainer>
+            <UserModel
+              Edit={Edit}
+              open={open}
+              handleClose={handleClose}
+              setOpen={setOpen}
+              handleClickOpen={handleClickOpen}
+            />
+            <UserDeleteModel
+              DeleteId={DeleteId}
+              open={openDelete}
+              handleCloseDelete={handleCloseDelete}
+              setOpen={setOpenDelete}
+              handleClickOpenDelete={handleClickOpenDelete}
+            />
             <div style={{ marginLeft: "auto" }}>
               <ReactPaginate
                 style={{ listStyle: "none", display: "-webkit-inline-box" }}
@@ -220,7 +226,7 @@ function Tablecomponent() {
                 }
                 breakLabel={"..."}
                 breakClassName={"break-me"}
-                pageCount={2}
+                pageCount={3}
                 marginPagesDisplayed={0}
                 pageRangeDisplayed={perPage}
                 onPageChange={handlePageClick}

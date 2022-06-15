@@ -34,7 +34,7 @@ function Header() {
   const handleCloseLoginModel = () => {
     setOpenLoginModel(false);
   };
-
+  const headerTitle = React.createElement("h3", {style: { color: "" } }, "Graphql");
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -60,11 +60,11 @@ function Header() {
           )}
 
           <Typography
-            variant="h6"
+            // variant="h6"
             component="div"
             style={{ marginRight: "auto", margin: "auto" }}
           >
-            Graphql Crud
+            {headerTitle}
           </Typography>
           {LoginDetails?.name ? (
             <>
