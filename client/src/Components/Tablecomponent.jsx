@@ -10,9 +10,6 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
 import Loader from "./Loader";
-import ReactPaginate from "react-paginate";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useQuery } from "@apollo/client";
 import { GET_USER } from "../graphql-queries/queries";
 import UserModel from "../Models/UserModel";
@@ -22,6 +19,7 @@ import InfoModel from "../Models/InfoModel";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "../App.css";
+import Tablepagination from "../Pagination/Tablepagination";
 
 function Tablecomponent() {
   const [LoginDetails] = useContext(UserContext);
@@ -52,17 +50,17 @@ function Tablecomponent() {
   };
   const [Search, setSearch] = useState("");
   const { loading, data, error } = useQuery(GET_USER);
-  const [offset, setOffset] = useState(0);
-  const [perPage] = useState(2);
 
-  const handlePageClick = (e) => {
-    const selectedPage = e.selected;
-    setOffset(selectedPage);
-  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage] = useState(3);
 
-  const offset1 = offset * perPage;
-  // console.log(offset1);
-
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = data?.users.slice(
+    indexOfFirstRecord,
+    indexOfLastRecord
+  );
+  const nPages = Math.ceil(data?.users.length / recordsPerPage);
   return error ? (
     "Error !"
   ) : loading ? (
@@ -70,7 +68,7 @@ function Tablecomponent() {
   ) : (
     <>
       <div style={{ width: 1200, display: "inline-block" }}>
-        {data?.users && (
+        {currentRecords && (
           <>
             <span>
               <Paper
@@ -87,10 +85,9 @@ function Tablecomponent() {
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Search with Name"
-                  onChange={ debounce((e) => {
-                    // console.log("debounce",e.target.value);
-                      setSearch(e.target.value);
-                    }, 2000)}
+                  onChange={debounce((e) => {
+                    setSearch(e.target.value);
+                  }, 2000)}
                 />
               </Paper>
             </span>
@@ -101,7 +98,7 @@ function Tablecomponent() {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead style={{ backgroundColor: "violet" }}>
                   <TableRow>
-                    <TableCell>S.No</TableCell>
+                    {/* <TableCell>S.No</TableCell> */}
                     <TableCell align="right">Name</TableCell>
                     <TableCell align="right">Email</TableCell>
                     <TableCell align="right">Mobile</TableCell>
@@ -110,7 +107,7 @@ function Tablecomponent() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data?.users
+                  {currentRecords
                     ?.filter((value, i) => {
                       if (Search === !null) {
                         return value;
@@ -119,7 +116,6 @@ function Tablecomponent() {
                       }
                     })
                     .reverse()
-                    .slice(offset1, offset1 + perPage)                    
                     .map((item, i) => (
                       <TableRow
                         key={i}
@@ -127,20 +123,20 @@ function Tablecomponent() {
                           "&:last-child td, &:last-child th": { border: 0 },
                         }}
                       >
-                        <TableCell component="th" scope="row">
+                        {/* <TableCell component="th" scope="row">
                           {i + 1}
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell align="right">{item.username}</TableCell>
                         <TableCell align="right">{item.email}</TableCell>
                         <TableCell align="right">{item.mobile}</TableCell>
                         <TableCell align="right">
-                          {/* <Button
+                          <Button
                             onClick={() => {
                               getInfo(item);
                             }}
                           >
                             <InfoModel Info={Info} />
-                          </Button> */}
+                          </Button>
                         </TableCell>
                         <TableCell align="right">
                           {LoginDetails?.name ? (
@@ -191,7 +187,6 @@ function Tablecomponent() {
                             </Button>
                           )}
                         </TableCell>
-                        {/* ////ok */}
                       </TableRow>
                     ))}
                 </TableBody>
@@ -212,27 +207,10 @@ function Tablecomponent() {
               handleClickOpenDelete={handleClickOpenDelete}
             />
             <div style={{ marginLeft: "auto" }}>
-              <ReactPaginate
-                style={{ listStyle: "none", display: "-webkit-inline-box" }}
-                previousLabel={
-                  <ArrowBackIosNewIcon
-                    style={{ color: offset === 0 && "gray" }}
-                  />
-                }
-                nextLabel={
-                  <ArrowForwardIosIcon
-                    style={{ color: offset === data?.users.length && "gray" }}
-                  />
-                }
-                breakLabel={"..."}
-                breakClassName={"break-me"}
-                pageCount={3}
-                marginPagesDisplayed={0}
-                pageRangeDisplayed={perPage}
-                onPageChange={handlePageClick}
-                containerClassName={"pagination"}
-                subContainerClassName={"pages pagination"}
-                activeClassName={"active"}
+              <Tablepagination
+                nPages={nPages}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
               />
             </div>
           </>
