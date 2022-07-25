@@ -15,29 +15,29 @@ function UserLogoutModel() {
   const TimeOutInMinutes = millisToMinutesAndSeconds(SesionOutCount);
 
   useEffect(() => {
-    if (LoginDetails.login) {
-      toast(toastContent(), {
-        transition: Slide,
-      });
-      let timeValue = setTimeout(
-        () => {
-          localStorage.clear();
-          toast.success("Session Expired ", {
-            transition: Zoom,
-          });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        },
-        SesionOutCount,
-        {
-          transition: Slide,
-        }
-      );
-      return () => {
-        clearTimeout(timeValue);
-      };
-    }
+    // if (LoginDetails.login) {
+    //   toast(toastContent(), {
+    //     transition: Slide,
+    //   });
+    //   let timeValue = setTimeout(
+    //     () => {
+    //       localStorage.clear();
+    //       toast.success("Session Expired ", {
+    //         transition: Zoom,
+    //       });
+    //       setTimeout(() => {
+    //         window.location.reload();
+    //       }, 1000);
+    //     },
+    //     SesionOutCount,
+    //     {
+    //       transition: Slide,
+    //     }
+    //   );
+    //   return () => {
+    //     clearTimeout(timeValue);
+    //   };
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [SesionOutCount]);
   const toastContent = () => {

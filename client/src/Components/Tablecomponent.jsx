@@ -49,6 +49,7 @@ function Tablecomponent() {
     setInfo(val);
   };
   const [Search, setSearch] = useState("");
+  
   const { loading, data, error } = useQuery(GET_USER);
 
   const [currentPage, setCurrentPage] = useState(1);
