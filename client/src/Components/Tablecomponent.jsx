@@ -28,6 +28,12 @@ function Tablecomponent() {
   const [DeleteId, setDeleteId] = useState("");
   const [Edit, setEdit] = useState("");
   const [Info, setInfo] = useState("");
+  const [Search, setSearch] = useState("");
+  
+  const { loading, data, error } = useQuery(GET_USER);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage] = useState(3);
 
   const handleClickOpen = (val) => {
     setOpen(true);
@@ -48,12 +54,13 @@ function Tablecomponent() {
   const getInfo = (val) => {
     setInfo(val);
   };
-  const [Search, setSearch] = useState("");
   
-  const { loading, data, error } = useQuery(GET_USER);
+  const delaySaveToDb = useCallback(debounce((val)=>{
+    setSearch(val)
+  }
+, 2000), []);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage] = useState(3);
+ 
 
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
@@ -86,9 +93,13 @@ function Tablecomponent() {
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Search with Name"
-                  onChange={debounce((e) => {
+                  onChange={debounce((e) => {   ///with npn 
                     setSearch(e.target.value);
                   }, 2000)}
+              
+            // onChange={(e) => {   //with custom method///
+            //   delaySaveToDb(e.target.value);
+            // }}
                 />
               </Paper>
             </span>
