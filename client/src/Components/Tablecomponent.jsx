@@ -54,11 +54,11 @@ function Tablecomponent() {
   const getInfo = (val) => {
     setInfo(val);
   };
-  
-  const delaySaveToDb = useCallback(debounce((val)=>{
-    setSearch(val)
-  }
-, 2000), []);
+
+//   const delaySaveToDb = useCallback(debounce((val)=>{
+//     setSearch(val)
+//   }
+// , 2000), []);
 
  
 
