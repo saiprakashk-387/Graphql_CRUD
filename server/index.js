@@ -20,7 +20,7 @@ mongoose.connect(process.env.MONGODB, {
   useUnifiedTopology: true,
 });
 mongoose.connection.on("connected", () => {
-  console.log("mongoose connected successfully");
+  console.log("mongoose connected successfullyyy");
 });
 mongoose.connection.on("err", (err) => {
   console.log("mongoose error", err);
